@@ -6,6 +6,7 @@ const resolvers = {
   // define query functionality
   Query: {
     me: async (parent, args, context) => {
+      console.log(context);
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate('savedBooks');
       }
@@ -41,6 +42,7 @@ const resolvers = {
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: userId },
+          { $addToSet: { savedBooks: book } }
         )
       }
     },
