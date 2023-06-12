@@ -6,8 +6,12 @@ const resolvers = {
   // define query functionality
   Query: {
     me: async (parent, args, context) => {
-      console.log(context);
+      // console.log(context);
       if (context.user) {
+        // await User.findOneAndUpdate(
+        //   { _id: context.user._id },
+        //   { $unset: { savedBooks: true }},
+        // );
         return User.findOne({ _id: context.user._id }).populate('savedBooks');
       }
       throw new AuthenticationError('You need to be logged in!');
@@ -37,19 +41,29 @@ const resolvers = {
         const token = signToken(user);
         return { token, user };
     },
-    // TODO: write saveBook function and deleteBook function
-    saveBook: async (parent, { book }, context) => {
+    // function to save new books
+    saveBook: async (parent, bookInput, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
-          { _id: userId },
-          { $addToSet: { savedBooks: book } }
-        )
+        console.log(bookInput.book);
+        const user = await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { savedBooks: bookInput.book }},
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        console.log('Added book to user')
+        console.log(user);
+        return user;
       }
+      throw new AuthenticationError('You need to be logged in!');
     },
+    // function to remove books for savedBooks based on id
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         return User.findOneAndUpdate(
-          { _id: userId },
+          { _id: context.user._id },
           {
             $pull: {
               savedBooks: {

@@ -120,6 +120,7 @@ const SearchBooks = () => {
         </h2>
         <Row>
           {searchedBooks.map((book) => {
+            console.log(book);
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>
