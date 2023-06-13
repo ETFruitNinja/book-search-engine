@@ -6,7 +6,7 @@ App that allows users to search for books and add books to their collection.
 
 ![alt="homepage"](./assets/screenshot.PNG)
 
-Link to deployed application: 
+Link to deployed application: https://jy-book-search-engine.herokuapp.com/
 
 ## Table of Contents
 - [Installation](#installation)
